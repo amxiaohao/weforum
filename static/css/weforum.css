@@ -1,0 +1,27 @@
+body {
+  padding-top: 70px;
+  background-color: #f5f8fa;
+}
+
+header .navbar-brand {
+  font-size: 1.4em;
+  font-weight: 200;
+}
+
+main .container {
+
+}
+
+.page-header {
+  margin: 0;
+}
+
+.no-data {
+  text-align: center;
+  padding: 1em 0;
+}
+
+.user-img {
+    width: 25px;
+    float: left;
+}

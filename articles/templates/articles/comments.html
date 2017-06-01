@@ -1,0 +1,36 @@
+{% load humanize %}
+<hr>
+<h4><span class="comment-count">{{ article.get_comments.count }}</span>
+  评论
+</h4>
+{% if user.is_authenticated %}
+<div class="post-comment clearfix">
+  <form action="{% url 'articles:comment' article.id %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="article_id" value="{{ article.pk }}">
+    <div class="user-portrait clearfix">
+      <img src="{{ user.profile.get_picture }}" alt="">
+    </div>
+    <div class="comment-input clearfix">
+      <textarea name="comment" id="comment" rows="3" placeholder="发表评论" class="form-control"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">发表评论</button>
+  </form>
+</div>
+{% endif %}
+<div class="well well-sm" id="comment-list">
+  {% for comment in article.get_comments %}
+  <div class="comment">
+    <a href="#"><img src="{{ comment.user.profile.get_picture }}" class="comment-portrait"></a>
+    <div class="comment-text">
+      <h5>
+        <a href="#">{{ comment.user.username }}</a> 
+        <small>{{ comment.date|naturaltime }}</small>
+      </h5>
+      <p>{{ comment.comment }}</p>
+    </div>
+  </div>  
+  {% empty %}
+    <div style="padding: .6em 0">还没有评论</div>
+  {% endfor %}
+</div>

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block head %}
+  <link href="{% static 'css/write.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block main %}
+<div class="write">
+  <ol class="breadcrumb">
+    <li><a href="{% url 'articles:articles' %}">首页</a></li>
+    <li class="active"><a href="{% url 'articles:draft' %}">草稿箱</a></li>
+  </ol>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>主题</th>
+        <th>内容</th>
+        <th>标签</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for article in draft_list %}
+        <tr>
+          <td>
+            <a href="{% url 'articles:edit_article' article.pk %}">
+              {{ article.title }}
+            </a>
+          </td>
+          <td>{{ article.get_summary_as_markdowm|safe }}</td>
+          <td>
+            {% for tag in article.get_tags %}
+              <span class="label label-default">{{ tag }}</span>
+            {% endfor %}
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan='4' style="text-align: center">
+            没有草稿
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

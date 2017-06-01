@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/articles.css' %}">
+{% endblock %}
+
+{% block main %}
+  <div class="row">
+    <div class="col-md-7">
+
+      <div class="page-header">
+        {% if user.is_authenticated %}
+          <a href="{% url 'articles:write' %}" class="btn btn-default">
+            <span class="glyphicon glyphicon-pencil"></span>发帖
+          </a>
+          <a href="{% url 'articles:draft' %}" class="btn btn-default" style="margin-right: .8em">草稿箱</a>
+        {% endif %}
+      </div>
+
+      <section class="articles">
+        {% for article in articles %}
+          {% include 'articles/partial_article.html' with article=article %}
+        {% empty %}
+          <h5 class="no-data">还没有帖子发布<a href="#">来发布第一个帖子吧</a></h5>    
+        {% endfor %}        
+      </section>  
+    </div>
+    <div class="col-md-2 popular-tags">
+      <h4>热门标签</h4>
+      {% for tag, count in popular_tags %}
+        <a href="{% url 'articles:tag' tag %}"><span class="label label-default">{{ tag }} {{ count }}</span></a>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      {% include 'paginator.html' with page=articles %}
+    </div>
+  </div>
+{% endblock %}

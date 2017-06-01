@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %} {{ page_user.profile.get_screen_name }} {% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
+
+{% block main %}
+
+  <div class="profile">
+    <div class="row">
+      <div class="col-md-3 user-profile">
+        <img src="{{ page_user.profile.get_picture }}" class="picture">
+        <ul>
+          {% if page_user.profile.job_title %}
+            <li>
+              <span class="glyphicon glyphicon-briefcase"></span> 
+                {{ page_user.profile.job_title }}
+            </li>
+          {% endif %}
+          {% if page_user.profile.location %}
+            <li>
+              <span class="glyphicon glyphicon-map-marker"></span> 
+                {{ page_user.profile.location }}
+            </li>
+          {% endif %}
+          {% if page_user.profile.url %}
+            <li>
+              <span class="glyphicon glyphicon-globe"></span> 
+              <a href="{{ page_user.profile.get_url }}" target="_blank">
+                {{ page_user.profile.get_url }}
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+      <div class="col-md-5">
+        <h4>{{ page_user.profile.get_screen_name }}的最近发帖</h4><hr>
+        <section class="articles">
+        {% for article in articles %}
+          <article>
+            <h4>
+              <a href="{% url 'articles:article' article.slug %}">
+                {{ article.title }}
+              </a>
+            </h4>
+            <div class="info">
+            <span class="date">
+              <span class="glyphicon glyphicon-calendar"></span>
+                {{ article.create_date }}
+            </span>
+            <span class="user">
+              <a href="#">
+                <img src="{{ article.create_user.profile.get_picture }}">
+              </a>
+              <a href="#">{{ article.create_user.username }}</a>
+            </span>
+            <span class="comments">
+              <span class="glyphicon glyphicon-comment"></span>
+                {{ article.get_comments.count }} Comments
+            </span>
+            </div>
+            <div class="content">
+              {{ article.get_content_as_markdown|safe }}
+            </div>
+            {% if article.get_tags %}
+              <div class="tags">
+                {% for tag in article.get_tags %}
+                  <a href="#">
+                    <span class="label label-default">{{ tag }}</span>
+                  </a>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </article>  
+        {% endfor %}        
+        </section> 
+      </div>
+    </div>
+  </div>
+{% endblock %}

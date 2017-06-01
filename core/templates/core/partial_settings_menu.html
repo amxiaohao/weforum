@@ -1,0 +1,5 @@
+<div class="list-group">
+  <a href="{% url 'core:settings' %}" class="list-group-item{% if active == 'profile' %} active{% endif %}">账号资料</a>
+  <a href="{% url 'core:upload_picture' %}" class="list-group-item{% if active == 'picture' %} active{% endif %}">账号头像</a>
+  <a href="{% url 'core:password' %}" class="list-group-item{% if active == 'password' %} active{% endif %}">修改密码</a> 
+</div>

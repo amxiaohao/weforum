@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block head %}
+  <link href="{% static 'css/write.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block main %}
+<div class="col-md-8 write">
+  <ol class="breadcrumb">
+    <li><a href="{% url 'articles:articles' %}">首页</a></li>
+    <li class="active">发帖</li>
+  </ol>
+  <form action="{% url 'articles:write' %}" method="post" role="form">
+    {% csrf_token %}
+    {% for field in form.visible_fields %}
+      <div class="form-group{% if field.errors %} has-error{% endif %}">
+        <label for="{{ field.label }}" class="control-label">{{ field.label }}</label>
+        {{ field }}
+        {% if field.help_text %}
+          <span class="help-block">{{ field.help_text }}</span>
+        {% endif %}
+        {% for error in field.errors %}
+          <label class="control-label">{{ error }}</label>
+        {% endfor %}
+      </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">发布/草稿箱</button>
+  </form>
+</div>
+{% endblock %}
